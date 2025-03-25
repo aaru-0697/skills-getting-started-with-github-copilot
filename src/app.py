@@ -85,7 +85,15 @@ def root():
 
 @app.get("/activities")
 def get_activities():
-    return activities
+    # Add availability calculation
+    activities_with_availability = {
+        name: {
+            **details,
+            "availability": details["max_participants"] - len(details["participants"])
+        }
+        for name, details in activities.items()
+    }
+    return activities_with_availability
 
 
 @app.post("/activities/{activity_name}/signup")
